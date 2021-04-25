@@ -24,7 +24,7 @@ class ModeButton: UIButton {
         layer.shadowOffset = .zero
         layer.shadowRadius = 0.5
         heightAnchor.constraint(equalToConstant: 50).isActive = true
-        isEnabled = false
+      
     }
     
     required init?(coder: NSCoder) {

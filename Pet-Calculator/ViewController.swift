@@ -10,16 +10,21 @@ import EasyPeasy
 
 
 class ViewController: UIViewController {
-  
+    var mode = true
+    private var checkOperation = false
+    private var dotCounter = false
     private var firstVar = 0.0
     private var secondVar = 0.0
     private var sum = 0.0
     private var operationType = 0
-    let paddingLeft = UIScreen.main.bounds.width * 0.04
-    let  paddingInside = UIScreen.main.bounds.width * 0.04
+    private var calculated = false
+    private let paddingLeft = UIScreen.main.bounds.width * 0.04
+    private let  paddingInside = UIScreen.main.bounds.width * 0.04
     private var paddingInsideHieght = UIScreen.main.bounds.width * 0.04
+    private var  paddingMain = CGFloat(50)
     private var str = ""
-    let calculator = CalcLabel(title: "Calculator", labelColor: .black)
+    
+    let calculator = CalcLabel(title: "Calculator", modeStyle: true)
     let modeButton = ModeButton(img: "sun.max", type: .system)
     let calcView = CalcView()
     let clear = OperationButtons(title: "C", type: .system)
@@ -41,10 +46,11 @@ class ViewController: UIViewController {
     let equal = OperationButtons(title: "=", type: .system)
     let dot = OperationButtons(title: ".", type: .system)
     let sqrt = OperationButtons(title: "√", type: .system)
-  
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         one.addTarget(self, action: #selector(onePressed), for: .touchUpInside)
         two.addTarget(self, action: #selector(twoPressed), for: .touchUpInside)
         three.addTarget(self, action: #selector(threePressed), for: .touchUpInside)
@@ -65,6 +71,8 @@ class ViewController: UIViewController {
         multiply.addTarget(self, action: #selector(multiplyPressed), for: .touchUpInside)
         equal.addTarget(self, action: #selector(equalPressed), for: .touchUpInside)
         
+        modeButton.addTarget(self, action: #selector(modeChanged), for: .touchUpInside)
+        
         setInsidePadding()
         setViews()
         setheriarchy()
@@ -72,11 +80,21 @@ class ViewController: UIViewController {
         
         view.backgroundColor = .systemYellow
     }
-    func setViews(){}
+    func setViews(){
+        
+    }
     func setInsidePadding(){
         print("DEBUG HEIGHT \(UIScreen.main.bounds.height)")
         if UIScreen.main.bounds.height < 800 {
             paddingInsideHieght = 13
+        }
+        if UIScreen.main.bounds.height < 700 {
+            paddingInsideHieght = 12
+            paddingMain = 30
+        }
+        if UIScreen.main.bounds.height < 740 {
+            paddingInsideHieght = 12
+            paddingMain = 40
         }
     }
     func setheriarchy(){
@@ -109,8 +127,8 @@ class ViewController: UIViewController {
         view.addSubview(equal)
     }
     func setContraints(){
-        calculator.easy.layout(CenterX(), Top(50))
-        modeButton.easy.layout(Top(50), Right(16))
+        calculator.easy.layout(CenterX(), Top(paddingMain))
+        modeButton.easy.layout(Top(paddingMain), Right(16))
         calcView.easy.layout(CenterX(), Left(8), Right(8), Top(16).to(calculator))
         
         clear.easy.layout(Top(paddingInsideHieght).to(calcView), Left(paddingLeft))
@@ -139,85 +157,96 @@ class ViewController: UIViewController {
         
     }
     @objc func onePressed(){
-        calcView.workArea.text?.append("1")
+        checkForOperation()
+        checkStringLength(value:"1")
     }
     @objc func twoPressed(){
-        calcView.workArea.text?.append("2")
+        checkForOperation()
+        checkStringLength(value:"2")
     }
     @objc func threePressed(){
-        calcView.workArea.text?.append("3")
+        checkForOperation()
+        checkStringLength(value:"3")
     }
     @objc func fourPressed(){
-        calcView.workArea.text?.append("4")
+        checkForOperation()
+        checkStringLength(value:"4")
     }
     @objc func fivePressed(){
-        calcView.workArea.text?.append("5")
+        checkForOperation()
+        checkStringLength(value:"5")
     }
     @objc func sixPressed(){
-        calcView.workArea.text?.append("6")
+        checkForOperation()
+        checkStringLength(value:"6")
     }
     @objc func sevenPressed(){
-        calcView.workArea.text?.append("7")
+        checkForOperation()
+        checkStringLength(value:"7")
     }
     @objc func eightPressed(){
-        calcView.workArea.text?.append("8")
+        checkForOperation()
+        checkStringLength(value:"8")
     }
     @objc func ninePressed(){
-        calcView.workArea.text?.append("9")
+        checkForOperation()
+        checkStringLength(value:"9")
     }
     @objc func zeroPressed(){
-        calcView.workArea.text?.append("0")
+        checkForOperation()
+        checkStringLength(value:"0")
     }
     @objc func dotPressed(){
-        calcView.workArea.text?.append(".")
+        checkForOperation()
+        checkForDot()
+        
+        
     }
     @objc func clearPressed(){
         calcView.workArea.text? = ""
         calcView.operation.text? = ""
+        dotCounter = false
     }
     @objc func sqrtPressed(){
-        if calcView.workArea.text != nil {
-            let temp = Double(calcView.workArea.text!)
-            calcView.workArea.text =  String(format: "%.3f", temp!.squareRoot())
-            
+        if calcView.workArea.text != nil && calcView.workArea.text != "" {
+            if let unwrap = calcView.workArea.text {
+                let temp = Double(unwrap)
+                let sqrt = temp?.squareRoot()
+                isIntager(value: sqrt!)
+                calcView.workArea.text = str
+            }
         }
-        
     }
     
     @objc func plusPressed(){
-        if calcView.workArea.text != nil {
+        if calcView.workArea.text != nil && calcView.workArea.text != "" {
             firstVar = Double(calcView.workArea.text!) ?? 0
             isIntager(value: firstVar)
             calcView.workArea.text = ""
             calcView.operation.text?.append(str + " + ")
-            
-            
             operationType = 1
         }
-        
     }
     @objc func minusPressed(){
-        if calcView.workArea.text != nil {
+        if calcView.workArea.text != nil && calcView.workArea.text != "" {
             firstVar = Double(calcView.workArea.text!) ?? 0
             isIntager(value: firstVar)
             calcView.workArea.text = ""
             calcView.operation.text?.append(str + " - ")
             operationType = 2
         }
-        
     }
     @objc func dividePressed(){
-        if calcView.workArea.text != nil {
+        if calcView.workArea.text != nil && calcView.workArea.text != "" {
             firstVar = Double(calcView.workArea.text!) ?? 0
             isIntager(value: firstVar)
             calcView.workArea.text = ""
             calcView.operation.text?.append(str + " / ")
             operationType = 3
         }
-        
     }
     @objc func multiplyPressed(){
-        if calcView.workArea.text != nil {
+        if calcView.workArea.text != nil && calcView.workArea.text != "" {
             firstVar = Double(calcView.workArea.text!) ?? 0
             calcView.workArea.text = ""
             isIntager(value: firstVar)
@@ -225,21 +254,19 @@ class ViewController: UIViewController {
             calcView.operation.text?.append(str + " * ")
             operationType = 4
         }
-        
     }
     @objc func equalPressed(){
-        if calcView.workArea.text != nil {
+        if calcView.workArea.text != nil && calcView.workArea.text != ""{
             secondVar = (Double(calcView.workArea.text!) ?? 0)
             isIntager(value: secondVar)
-            calcView.operation.text?.append(str + " ")
-            
+            calcView.operation.text?.append(str + " = ")
             getSum(command: operationType)
-            
             isIntager(value: sum)
             calcView.workArea.text = str
-            
+            calculated = true
+            checkOperation = true
+            dotCounter = false
         }
-        
     }
     func getSum(command: Int){
         switch command  {
@@ -252,18 +279,55 @@ class ViewController: UIViewController {
         case 4:
             sum = firstVar * secondVar
         default:
-            sum = firstVar         }
+            sum = firstVar
+        }
     }
-    
     
     func isIntager(value: Double)  {
         let isInteger = floor(value) == value // true
+        str = String(value)
         var intVar = 0
         if isInteger{
             intVar = Int(value)
             str = String(intVar)
         } else {
-        str = String(value)
+            str = String(format: "%g", value)
+        }
+    }
+    func isCalculated(){
+        if calculated{
+            calcView.workArea.text = ""
+            calcView.operation.text = ""
+        }
+    }
+    @objc func modeChanged(){
+        // change to dark mode
+    }
+    func checkStringLength(value: String){
+        if calcView.workArea.text?.count ?? 0 <= 8 {
+            calcView.workArea.text?.append(value)
+        } else {
+            let alert = UIAlertController(title: "Stop Clicking", message: "This is not professional calculator", preferredStyle: UIAlertController.Style.alert)
+            
+            
+            alert.addAction(UIAlertAction(title: "GOT IT", style: UIAlertAction.Style.default, handler: nil))
+            
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    func checkForOperation(){
+        if checkOperation {
+            calcView.workArea.text = ""
+            calcView.operation.text = ""
+            checkOperation = false
+        }
+    }
+    func checkForDot(){
+        if dotCounter == false {
+            checkStringLength(value:".")
+            dotCounter = true
         }
     }
 }

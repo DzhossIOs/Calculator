@@ -10,14 +10,20 @@ import UIKit
 
 class CalcLabel: UILabel {
     
-    init(title: String, labelColor: UIColor){
+    init(title: String, modeStyle: Bool){
         super.init(frame: .zero)
         text = title
-        textColor = labelColor
+        
         textAlignment = .center
         font = .monospacedSystemFont(ofSize: 24, weight: .semibold)
-       // font = UIFont.systemFont(ofSize: 20, weight: .heavy)
         heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        if modeStyle {
+            textColor = .black
+        }
+        else {
+            textColor = .cyan
+        }
        
     }
     

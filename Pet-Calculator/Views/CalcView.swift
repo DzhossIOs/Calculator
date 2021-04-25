@@ -10,16 +10,13 @@ import EasyPeasy
 
 class CalcView: UIView {
     
-    let operation = CalcLabel(title: "", labelColor: .systemGray)
-    let workArea = CalcLabel(title: "", labelColor: .black)
+    let operation = CalcLabel(title: "", modeStyle: true)
+    let workArea = CalcLabel(title: "", modeStyle: true)
     private var viewHeight = UIScreen.main.bounds.height * 0.245
-    
-    //MARK: - LifeCycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setSizeOfCalcView()
-        
         heightAnchor.constraint(equalToConstant: viewHeight).isActive = true
         backgroundColor = .white
         layer.cornerRadius = 20
@@ -34,7 +31,6 @@ class CalcView: UIView {
         
     }
     func setViews(){
-        
         operation.font = .monospacedSystemFont(ofSize: 18, weight: .light)
         workArea.font = .monospacedSystemFont(ofSize: 60, weight: .ultraLight)
     }
