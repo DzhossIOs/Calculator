@@ -10,38 +10,34 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
-    
-/// Alias of UIView
-public typealias View = UIView
-    
-/**
-     Extension making `UIView` conform the `Item` protocol and
-     therefore inherit the extended methods and properties
- */
-extension UIView: Item {
+    import UIKit
 
-    /// Owning `UIView` for the current `Item`. The concept varies
-    /// depending on the class conforming the protocol
-    public var owningView: View? {
-        return self.superview
-    }
-    
-}
+    /// Alias of UIView
+    public typealias View = UIView
 
-/**
-     Extension making `UILayoutGuide` conform the `Item` protocol
-     therefore and inherit the extended methods and properties
- */
-@available(iOS 9.0, *)
-extension UILayoutGuide: Item {
-    
-    /// Constraints in `owningView` with the current `UILayoutGuide`
-    /// as `firstItem`
-    public var constraints: [NSLayoutConstraint] {
-        return self.owningView?.constraints.filter { $0.firstItem === self } ?? []
+    /**
+         Extension making `UIView` conform the `Item` protocol and
+         therefore inherit the extended methods and properties
+     */
+    extension UIView: Item {
+        /// Owning `UIView` for the current `Item`. The concept varies
+        /// depending on the class conforming the protocol
+        public var owningView: View? {
+            return superview
+        }
     }
-    
-}
-    
+
+    /**
+         Extension making `UILayoutGuide` conform the `Item` protocol
+         therefore and inherit the extended methods and properties
+     */
+    @available(iOS 9.0, *)
+    extension UILayoutGuide: Item {
+        /// Constraints in `owningView` with the current `UILayoutGuide`
+        /// as `firstItem`
+        public var constraints: [NSLayoutConstraint] {
+            return owningView?.constraints.filter { $0.firstItem === self } ?? []
+        }
+    }
+
 #endif

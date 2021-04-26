@@ -9,40 +9,36 @@
 // SOFTWARE.
 
 #if !(os(iOS) || os(tvOS))
-    
-import AppKit
 
-/// Alias of NSView
-public typealias View = NSView
-    
-/**
-     Extension making `NSView` conform the `Item` protocol and
-     therefore inherit the extended methods and properties
- */
-extension NSView: Item {
-    
-    /// Owning `NSView` for the current `Item`. The concept varies
-    /// depending on the class conforming the protocol
-    public var owningView: View? {
-        // Owning view for `NSView` is the `superview`
-        return self.superview
+    import AppKit
+
+    /// Alias of NSView
+    public typealias View = NSView
+
+    /**
+         Extension making `NSView` conform the `Item` protocol and
+         therefore inherit the extended methods and properties
+     */
+    extension NSView: Item {
+        /// Owning `NSView` for the current `Item`. The concept varies
+        /// depending on the class conforming the protocol
+        public var owningView: View? {
+            // Owning view for `NSView` is the `superview`
+            return superview
+        }
     }
-    
-}
-    
-/**
-     Extension making `UILayoutGuide` conform the `Item` protocol
-     therefore and inherit the extended methods and properties
- */
-@available(OSX 10.11, *)
-extension NSLayoutGuide: Item {
-    
-    /// Constraints in `owningView` with the current `NSLayoutGuide`
-    /// as `firstItem`
-    public var constraints: [NSLayoutConstraint] {
-        return self.owningView?.constraints.filter { $0.firstItem === self } ?? []
+
+    /**
+         Extension making `UILayoutGuide` conform the `Item` protocol
+         therefore and inherit the extended methods and properties
+     */
+    @available(OSX 10.11, *)
+    extension NSLayoutGuide: Item {
+        /// Constraints in `owningView` with the current `NSLayoutGuide`
+        /// as `firstItem`
+        public var constraints: [NSLayoutConstraint] {
+            return owningView?.constraints.filter { $0.firstItem === self } ?? []
+        }
     }
-    
-}
-    
+
 #endif

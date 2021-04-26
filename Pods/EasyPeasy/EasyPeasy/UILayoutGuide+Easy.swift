@@ -9,40 +9,38 @@
 // SOFTWARE.
 
 #if os(iOS) || os(tvOS)
-    
-import UIKit
 
-/**
-    Apply operator definitions
- */
-@available (iOS 9.0, *)
-public extension UILayoutGuide {
-    
-    /**
-        Operator which applies the attribute given to the `UILayoutGuide`
-        located in the left hand side of it
-        - parameter lhs: `UILayoutGuide` the attributes will apply to
-        - parameter rhs: Attribute applied to the `UILayoutGuide`
-        - returns: The array of `NSLayoutConstraints` applied
-     */
-    @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
-    @discardableResult static func <- (lhs: UILayoutGuide, rhs: Attribute) -> [NSLayoutConstraint] {
-        return lhs <- [rhs]
-    }
+    import UIKit
 
     /**
-        Opeator which applies the attributes given to the `UILayoutGuide`
-        located in the left hand side of it
-        - parameter lhs: `UILayoutGuide` the attributes will apply to
-        - parameter rhs: Attributes applied to the `UILayoutGuide`
-        - returns: The array of `NSLayoutConstraints` applied
+        Apply operator definitions
      */
-    @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
-    @discardableResult static func <- (lhs: UILayoutGuide, rhs: [Attribute]) -> [NSLayoutConstraint] {
-        // Apply attributes and return the installed `NSLayoutConstraints`
-        return lhs.apply(attributes: rhs)
+    @available(iOS 9.0, *)
+    public extension UILayoutGuide {
+        /**
+            Operator which applies the attribute given to the `UILayoutGuide`
+            located in the left hand side of it
+            - parameter lhs: `UILayoutGuide` the attributes will apply to
+            - parameter rhs: Attribute applied to the `UILayoutGuide`
+            - returns: The array of `NSLayoutConstraints` applied
+         */
+        @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
+        @discardableResult static func <- (lhs: UILayoutGuide, rhs: Attribute) -> [NSLayoutConstraint] {
+            return lhs <- [rhs]
+        }
+
+        /**
+            Opeator which applies the attributes given to the `UILayoutGuide`
+            located in the left hand side of it
+            - parameter lhs: `UILayoutGuide` the attributes will apply to
+            - parameter rhs: Attributes applied to the `UILayoutGuide`
+            - returns: The array of `NSLayoutConstraints` applied
+         */
+        @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
+        @discardableResult static func <- (lhs: UILayoutGuide, rhs: [Attribute]) -> [NSLayoutConstraint] {
+            // Apply attributes and return the installed `NSLayoutConstraints`
+            return lhs.apply(attributes: rhs)
+        }
     }
 
-}
-    
 #endif

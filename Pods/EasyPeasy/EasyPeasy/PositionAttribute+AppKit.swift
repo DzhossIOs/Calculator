@@ -9,52 +9,50 @@
 // SOFTWARE.
 
 #if !(os(iOS) || os(tvOS))
-    
-import AppKit
 
-/**
-     DimensionAttribute extension adding some convenience methods to operate with
-     `NSViews`
- */
-extension PositionAttribute {
-    
+    import AppKit
+
     /**
-        Establishes a position relationship between the `NSView` the attribute
-        is applied to and the `NSView` passed as parameter.
-     
-        It's also possible to link this relationship to a particular attribute
-        of the `view` parameter by supplying `attribute`.
-     
-        - parameter view: The reference view
-        - parameter attribute: The attribute of `view` we are establishing the
-        relationship to
-        - returns: The current `Attribute` instance
+         DimensionAttribute extension adding some convenience methods to operate with
+         `NSViews`
      */
-    @discardableResult public func to(_ view: NSView, _ attribute: ReferenceAttribute? = nil) -> Self {
-        self.referenceItem = view
-        self.referenceAttribute = attribute
-        return self
+    public extension PositionAttribute {
+        /**
+            Establishes a position relationship between the `NSView` the attribute
+            is applied to and the `NSView` passed as parameter.
+
+            It's also possible to link this relationship to a particular attribute
+            of the `view` parameter by supplying `attribute`.
+
+            - parameter view: The reference view
+            - parameter attribute: The attribute of `view` we are establishing the
+            relationship to
+            - returns: The current `Attribute` instance
+         */
+        @discardableResult func to(_ view: NSView, _ attribute: ReferenceAttribute? = nil) -> Self {
+            referenceItem = view
+            referenceAttribute = attribute
+            return self
+        }
+
+        /**
+            Establishes a position relationship between the `NSView` the attribute
+            is applied to and the `NSLayoutGuide` passed as parameter.
+
+            It's also possible to link this relationship to a particular attribute
+            of the `view` parameter by supplying `attribute`.
+
+            - parameter layoutGuide: The reference `NSLayoutGuide`
+            - parameter attribute: The attribute of `view` we are establishing the
+            relationship to
+            - returns: The current `Attribute` instance
+         */
+        @available(OSX 10.11, *)
+        @discardableResult func to(_ layoutGuide: NSLayoutGuide, _ attribute: ReferenceAttribute? = nil) -> Self {
+            referenceItem = layoutGuide
+            referenceAttribute = attribute
+            return self
+        }
     }
-    
-    /**
-        Establishes a position relationship between the `NSView` the attribute
-        is applied to and the `NSLayoutGuide` passed as parameter.
-     
-        It's also possible to link this relationship to a particular attribute
-        of the `view` parameter by supplying `attribute`.
-     
-        - parameter layoutGuide: The reference `NSLayoutGuide`
-        - parameter attribute: The attribute of `view` we are establishing the
-        relationship to
-        - returns: The current `Attribute` instance
-     */
-    @available(OSX 10.11, *)
-    @discardableResult public func to(_ layoutGuide: NSLayoutGuide, _ attribute: ReferenceAttribute? = nil) -> Self {
-        self.referenceItem = layoutGuide
-        self.referenceAttribute = attribute
-        return self
-    }
-    
-}
-    
+
 #endif

@@ -11,9 +11,9 @@
 import Foundation
 
 #if os(iOS) || os(tvOS)
-import UIKit
+    import UIKit
 #elseif os(OSX)
-import AppKit
+    import AppKit
 #endif
 
 /**
@@ -21,44 +21,41 @@ import AppKit
      `clear`
  */
 public struct EasyPeasy {
-    
     /// Weak reference to the `Item` that owns this wrapper
     weak var item: Item?
-    
+
     /**
          Applies the attributes given to the current item
          - parameter attributes: `Attributes` applied to the `Item`
          - returns: The array of `NSLayoutConstraints` created and applied
      */
     @discardableResult public func layout(_ attributes: Attribute...) -> [NSLayoutConstraint] {
-        return self.item?.apply(attributes: attributes) ?? []
+        return item?.apply(attributes: attributes) ?? []
     }
-    
+
     /**
          Applies the attributes given to the current item
          - parameter attributes: `Attributes` applied to the `Item`
          - returns: The array of `NSLayoutConstraints` created and applied
      */
     @discardableResult public func layout(_ attributes: [Attribute]) -> [NSLayoutConstraint] {
-        return self.item?.apply(attributes: attributes) ?? []
+        return item?.apply(attributes: attributes) ?? []
     }
-    
+
     /**
          This method will trigger the recreation of the  created using
          *EasyPeasy* for the current view. `Condition` closures will
          be evaluated again
      */
     public func reload() {
-        self.item?.reload()
+        item?.reload()
     }
-    
+
     /**
          Clears all the constraints applied with EasyPeasy to current
          `Item`
      */
     public func clear() {
-        self.item?.clear()
+        item?.clear()
     }
-    
 }
-

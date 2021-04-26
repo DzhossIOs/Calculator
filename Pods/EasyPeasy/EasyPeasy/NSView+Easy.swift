@@ -9,44 +9,42 @@
 // SOFTWARE.
 
 #if !(os(iOS) || os(tvOS))
-    
-import AppKit
 
-infix operator <-
-   
-/**
-    Apply operator definitions
- */
-public extension NSView {
+    import AppKit
+
+    infix operator <-
 
     /**
-         Operator which applies the attribute given to the view located
-         in the left hand side of it
-         - parameter lhs: `NSView` the attributes will apply to
-         - parameter rhs: Attribute applied to the `NSView`
-         - returns: The array of `NSLayoutConstraints` applied
+        Apply operator definitions
      */
-    @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
-    @discardableResult static func <- (lhs: NSView, rhs: Attribute) -> [NSLayoutConstraint] {
-        return lhs <- [rhs]
+    public extension NSView {
+        /**
+             Operator which applies the attribute given to the view located
+             in the left hand side of it
+             - parameter lhs: `NSView` the attributes will apply to
+             - parameter rhs: Attribute applied to the `NSView`
+             - returns: The array of `NSLayoutConstraints` applied
+         */
+        @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
+        @discardableResult static func <- (lhs: NSView, rhs: Attribute) -> [NSLayoutConstraint] {
+            return lhs <- [rhs]
+        }
+
+        /**
+             Opeator which applies the attributes given to the view located
+             in the left hand side of it
+             - parameter lhs: NSView the attributes will apply to
+             - parameter rhs: Attributes applied to the NSView
+             - returns: The array of `NSLayoutConstraints` applied
+         */
+        @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
+        @discardableResult static func <- (lhs: NSView, rhs: [Attribute]) -> [NSLayoutConstraint] {
+            // Disable autoresizing to constraints translation
+            lhs.translatesAutoresizingMaskIntoConstraints = false
+
+            // Apply attributes and return the installed `NSLayoutConstraints`
+            return lhs.apply(attributes: rhs)
+        }
     }
 
-    /**
-         Opeator which applies the attributes given to the view located
-         in the left hand side of it
-         - parameter lhs: NSView the attributes will apply to
-         - parameter rhs: Attributes applied to the NSView
-         - returns: The array of `NSLayoutConstraints` applied
-     */
-    @available(iOS, deprecated: 1.5.1, message: "Use easy.layout(_:) instead")
-    @discardableResult static func <- (lhs: NSView, rhs: [Attribute]) -> [NSLayoutConstraint] {
-        // Disable autoresizing to constraints translation
-        lhs.translatesAutoresizingMaskIntoConstraints = false
-        
-        // Apply attributes and return the installed `NSLayoutConstraints`
-        return lhs.apply(attributes: rhs)
-    }
-    
-}
-    
 #endif

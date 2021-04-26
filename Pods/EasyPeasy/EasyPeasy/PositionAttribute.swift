@@ -10,21 +10,21 @@
 
 #if os(iOS) || os(tvOS)
 
-import UIKit
+    import UIKit
 
-/// Alias of UIEdgeInsets
-public typealias Insets = UIEdgeInsets
+    /// Alias of UIEdgeInsets
+    public typealias Insets = UIEdgeInsets
 
 #else
 
-import AppKit
+    import AppKit
 
-#if swift(>=4.0)
-public typealias Insets = NSEdgeInsets
-#else
-public typealias Insets = EdgeInsets
-#endif
-    
+    #if swift(>=4.0)
+        public typealias Insets = NSEdgeInsets
+    #else
+        public typealias Insets = EdgeInsets
+    #endif
+
 #endif
 
 /**
@@ -32,12 +32,11 @@ public typealias Insets = EdgeInsets
      constraints like left, right, top and bottom margins
  */
 open class PositionAttribute: Attribute {
-    
     /**
-        This method overrides super's `createConstraintForView` to set 
+        This method overrides super's `createConstraintForView` to set
         the `UIView` parameter to `superview` as `referenceItem` in case
         this is not specified by using the `to:view:attribute` method
-        - parameter view: `UIView` in which the generated 
+        - parameter view: `UIView` in which the generated
           `NSLayoutConstraint` will be added
      */
     @discardableResult override func createConstraints(for item: Item) -> [NSLayoutConstraint] {
@@ -46,152 +45,130 @@ open class PositionAttribute: Attribute {
         }
         return super.createConstraints(for: item)
     }
-    
 }
 
 /**
     The left side of the object’s alignment rectangle
  */
 public class Left: PositionAttribute {
-    
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .left
     }
-    
 }
 
 /**
     The right side of the object’s alignment rectangle
  */
 public class Right: PositionAttribute {
-
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .right
     }
-    
 }
 
 /**
     The top of the object’s alignment rectangle
  */
 public class Top: PositionAttribute {
-    
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .top
     }
-    
 }
 
 /**
     The bottom of the object’s alignment rectangle
  */
 public class Bottom: PositionAttribute {
-
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .bottom
     }
-    
 }
 
 /**
     The leading edge of the object’s alignment rectangle
  */
 open class Leading: PositionAttribute {
-
     /// `Attribute` applied to the view
-    open override var createAttribute: ReferenceAttribute {
+    override open var createAttribute: ReferenceAttribute {
         return .leading
     }
-    
 }
 
 /**
     The trailing edge of the object’s alignment rectangle
  */
 public class Trailing: PositionAttribute {
-
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .trailing
     }
-
 }
 
 /**
     The center along the x-axis of the object’s alignment rectangle
  */
 public class CenterX: PositionAttribute {
-
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .centerX
     }
-    
 }
 
 /**
     The center along the y-axis of the object’s alignment rectangle
  */
 public class CenterY: PositionAttribute {
- 
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .centerY
     }
-
 }
 
 /**
-    The object’s baseline. For objects with more than one line of text, 
+    The object’s baseline. For objects with more than one line of text,
     this is the baseline for the topmost line of text
  */
 public class FirstBaseline: PositionAttribute {
-
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .firstBaseline
     }
-    
 }
 
 /**
-    The object’s baseline. For objects with more than one line of text, 
+    The object’s baseline. For objects with more than one line of text,
     this is the baseline for the bottommost line of text
  */
 public class LastBaseline: PositionAttribute {
-
     /// `Attribute` applied to the view
-    public override var createAttribute: ReferenceAttribute {
+    override public var createAttribute: ReferenceAttribute {
         return .lastBaseline
     }
-
 }
 
 /**
     The size of the object’s rectangle
  */
 public class Edges: CompoundAttribute {
-    
     /**
         Initializer that creates the sub `Attribute` objects
         shaping the `CompoundAttribute` object with `constant = 0.0`,
         `multiplier = 1.0` and `RelatedBy = .Equal`
         - returns: the `CompoundAttribute` instance created
      */
-    public override init() {
+    override public init() {
         super.init()
-        self.attributes = [
+        attributes = [
             Top(),
             Left(),
             Right(),
-            Bottom()
+            Bottom(),
         ]
     }
-    
+
     /**
         Initializer that creates the sub `Attribute` objects shaping the
         `CompoundAttribute` object with `constant = value`, `multiplier = 1.0`
@@ -199,88 +176,16 @@ public class Edges: CompoundAttribute {
         - parameter value: `constant` of the constraint
         - returns: the `CompoundAttribute` instance created
      */
-    public override init(_ value: CGFloat) {
+    override public init(_ value: CGFloat) {
         super.init()
-        self.attributes = [
+        attributes = [
             Top(value),
             Left(value),
             Right(value),
-            Bottom(value)
+            Bottom(value),
         ]
     }
-    
-    /**
-        Initializer that creates the sub `Attribute` objects shaping the
-        `CompoundAttribute` object with `constant`, `multiplier` and 
-        `RelatedBy` properties defined by the `Constant` supplied
-        - parameter constant: `Constant` struct aggregating
-        `constant`, `multiplier` and `relatedBy` properties
-        - returns: the `CompoundAttribute` instance created
-     */
-    public override init(_ constant: Constant) {
-        super.init()
-        self.attributes = [
-            Top(constant),
-            Left(constant),
-            Right(constant),
-            Bottom(constant)
-        ]
-    }
-    
-    /**
-        Initializer that creates the sub `Attribute` objects shaping the
-        `CompoundAttribute` object with the `constant` properties specified by 
-        the `UIEdgeInsets` parameter, `multiplier = 1.0` and `RelatedBy = .Equal`
-        - parameter edgeInsets: `UIEdgeInsets` that gives value to the `constant`
-        properties of each one of the sub `Attribute` objects
-        - returns: the `CompoundAttribute` instance created
-     */
-    public init(_ edgeInsets: Insets) {
-        super.init()
-        self.attributes = [
-            Top(CGFloat(edgeInsets.top)),
-            Left(CGFloat(edgeInsets.left)),
-            Right(CGFloat(edgeInsets.right)),
-            Bottom(CGFloat(edgeInsets.bottom))
-        ]
-    }
-    
-}
 
-/**
-    The center along the x and y axis of the object’s alignment rectangle
- */
-public class Center: CompoundAttribute {
-    
-    /**
-        Initializer that creates the sub `Attribute` objects
-        shaping the `CompoundAttribute` object with `constant = 0.0`,
-        `multiplier = 1.0` and `RelatedBy = .Equal`
-        - returns: the `CompoundAttribute` instance created
-     */
-    public override init() {
-        super.init()
-        self.attributes = [
-            CenterX(),
-            CenterY()
-        ]
-    }
-    
-    /**
-        Initializer that creates the sub `Attribute` objects shaping the
-        `CompoundAttribute` object with `constant = value`, `multiplier = 1.0`
-        and `RelatedBy = .Equal`
-        - parameter value: `constant` of the constraint
-        - returns: the `CompoundAttribute` instance created
-     */
-    public override init(_ value: CGFloat) {
-        super.init()
-        self.attributes = [
-            CenterX(value),
-            CenterY(value)
-        ]
-    }
-    
     /**
         Initializer that creates the sub `Attribute` objects shaping the
         `CompoundAttribute` object with `constant`, `multiplier` and
@@ -289,28 +194,97 @@ public class Center: CompoundAttribute {
         `constant`, `multiplier` and `relatedBy` properties
         - returns: the `CompoundAttribute` instance created
      */
-    public override init(_ constant: Constant) {
+    override public init(_ constant: Constant) {
         super.init()
-        self.attributes = [
-            CenterX(constant),
-            CenterY(constant)
+        attributes = [
+            Top(constant),
+            Left(constant),
+            Right(constant),
+            Bottom(constant),
         ]
     }
-    
+
+    /**
+        Initializer that creates the sub `Attribute` objects shaping the
+        `CompoundAttribute` object with the `constant` properties specified by
+        the `UIEdgeInsets` parameter, `multiplier = 1.0` and `RelatedBy = .Equal`
+        - parameter edgeInsets: `UIEdgeInsets` that gives value to the `constant`
+        properties of each one of the sub `Attribute` objects
+        - returns: the `CompoundAttribute` instance created
+     */
+    public init(_ edgeInsets: Insets) {
+        super.init()
+        attributes = [
+            Top(CGFloat(edgeInsets.top)),
+            Left(CGFloat(edgeInsets.left)),
+            Right(CGFloat(edgeInsets.right)),
+            Bottom(CGFloat(edgeInsets.bottom)),
+        ]
+    }
+}
+
+/**
+    The center along the x and y axis of the object’s alignment rectangle
+ */
+public class Center: CompoundAttribute {
+    /**
+        Initializer that creates the sub `Attribute` objects
+        shaping the `CompoundAttribute` object with `constant = 0.0`,
+        `multiplier = 1.0` and `RelatedBy = .Equal`
+        - returns: the `CompoundAttribute` instance created
+     */
+    override public init() {
+        super.init()
+        attributes = [
+            CenterX(),
+            CenterY(),
+        ]
+    }
+
+    /**
+        Initializer that creates the sub `Attribute` objects shaping the
+        `CompoundAttribute` object with `constant = value`, `multiplier = 1.0`
+        and `RelatedBy = .Equal`
+        - parameter value: `constant` of the constraint
+        - returns: the `CompoundAttribute` instance created
+     */
+    override public init(_ value: CGFloat) {
+        super.init()
+        attributes = [
+            CenterX(value),
+            CenterY(value),
+        ]
+    }
+
+    /**
+        Initializer that creates the sub `Attribute` objects shaping the
+        `CompoundAttribute` object with `constant`, `multiplier` and
+        `RelatedBy` properties defined by the `Constant` supplied
+        - parameter constant: `Constant` struct aggregating
+        `constant`, `multiplier` and `relatedBy` properties
+        - returns: the `CompoundAttribute` instance created
+     */
+    override public init(_ constant: Constant) {
+        super.init()
+        attributes = [
+            CenterX(constant),
+            CenterY(constant),
+        ]
+    }
+
     /**
         Initializer that creates the sub `Attribute` objects shaping the
         `CompoundAttribute` object with the `constant` properties specified by
         the `CGPoint` parameter, `multiplier = 1.0` and `RelatedBy = .Equal`
-        - parameter point: `CGPoint` that gives value to the `constant` properties 
+        - parameter point: `CGPoint` that gives value to the `constant` properties
         of each one of the sub `Attribute` objects
         - returns: the `CompoundAttribute` instance created
      */
     public init(_ point: CGPoint) {
         super.init()
-        self.attributes = [
+        attributes = [
             CenterX(CGFloat(point.x)),
-            CenterY(CGFloat(point.y))
+            CenterY(CGFloat(point.y)),
         ]
     }
-    
 }

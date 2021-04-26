@@ -11,13 +11,11 @@
 import Foundation
 
 extension Collection {
-    
     func easy_flatMap<ElementOfResult>(_ transform: (Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult] {
         #if swift(>=4.1)
-            return try self.compactMap(transform)
+            return try compactMap(transform)
         #else
-            return try self.flatMap(transform)
+            return try flatMap(transform)
         #endif
     }
-    
 }

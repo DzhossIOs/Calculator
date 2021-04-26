@@ -9,9 +9,9 @@
 // SOFTWARE.
 
 #if os(iOS) || os(tvOS)
-import UIKit
+    import UIKit
 #else
-import AppKit
+    import AppKit
 #endif
 
 /**
@@ -19,26 +19,25 @@ import AppKit
     `Attribute` objects
  */
 open class CompoundAttribute: Attribute {
-    
     /// Array of attributes that shape the `CompoundAttribute`
     open internal(set) var attributes: [Attribute] = []
-    
+
     // MARK: Public methods
-    
+
     /**
          Sets the `priority` of the constraint and subconstraints
          - parameter priority: `Priority` enum specifying the
          priority of the constraint
          - returns: the `Attribute` instance
      */
-    @discardableResult open override func with(_ priority: Priority) -> Self {
+    @discardableResult override open func with(_ priority: Priority) -> Self {
         super.with(priority)
-        for attribute in self.attributes {
+        for attribute in attributes {
             attribute.with(priority)
         }
         return self
     }
-    
+
     /**
         Sets the `when` closure of the `Attribute` and each one
         of the `Attribute` objects shaping the `CompoundAttribute`
@@ -46,29 +45,28 @@ open class CompoundAttribute: Attribute {
          installing a constraint
          - returns: the `Attribute` instance
      */
-    @discardableResult open override func when(_ closure: Condition?) -> Self {
+    @discardableResult override open func when(_ closure: Condition?) -> Self {
         super.when(closure)
-        for attribute in self.attributes {
+        for attribute in attributes {
             attribute.when(closure)
         }
         return self
     }
-    
+
     #if os(iOS)
-    /**
-        Sets the `when` closure of the `Attribute` and each one
-        of the `Attribute` objects shaping the `CompoundAttribute`
-        - parameter closure: `Closure` to be called before installing a
-        constraint
-        - returns: the `Attribute` instance
-     */
-    @discardableResult open override func when(_ closure: ContextualCondition?) -> Self {
-        super.when(closure)
-        for attribute in self.attributes {
-            attribute.when(closure)
+        /**
+            Sets the `when` closure of the `Attribute` and each one
+            of the `Attribute` objects shaping the `CompoundAttribute`
+            - parameter closure: `Closure` to be called before installing a
+            constraint
+            - returns: the `Attribute` instance
+         */
+        @discardableResult override open func when(_ closure: ContextualCondition?) -> Self {
+            super.when(closure)
+            for attribute in attributes {
+                attribute.when(closure)
+            }
+            return self
         }
-        return self
-    }
     #endif
-    
 }

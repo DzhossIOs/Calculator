@@ -8,12 +8,11 @@
 import UIKit
 
 class ModeButton: UIButton {
-
-    init(img: String , type: ButtonType){
+    init(img: String, type _: ButtonType) {
         super.init(frame: .zero)
         let image = img
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .large)
-         let largeBoldDoc = UIImage(systemName: image, withConfiguration: largeConfig)
+        let largeBoldDoc = UIImage(systemName: image, withConfiguration: largeConfig)
         setImage(largeBoldDoc, for: .normal)
         backgroundColor = .none
         tintColor = .black
@@ -24,11 +23,10 @@ class ModeButton: UIButton {
         layer.shadowOffset = .zero
         layer.shadowRadius = 0.5
         heightAnchor.constraint(equalToConstant: 50).isActive = true
-      
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

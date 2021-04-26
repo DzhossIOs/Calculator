@@ -9,38 +9,36 @@
 // SOFTWARE.
 
 #if !(os(iOS) || os(tvOS))
-    
-import AppKit
-    
-/**
-    Apply operator definitions
- */
-@available (OSX 10.11, *)
-extension NSLayoutGuide {
+
+    import AppKit
 
     /**
-         Operator which applies the attribute given to the `NSLayoutGuide`
-         located in the left hand side of it
-         - parameter lhs: `NSLayoutGuide` the attributes will apply to
-         - parameter rhs: Attribute applied to the `NSLayoutGuide`
-         - returns: The array of `NSLayoutConstraints` applied
+        Apply operator definitions
      */
-    @discardableResult public static func <- (lhs: NSLayoutGuide, rhs: Attribute) -> [NSLayoutConstraint] {
-        return lhs <- [rhs]
+    @available(OSX 10.11, *)
+    public extension NSLayoutGuide {
+        /**
+             Operator which applies the attribute given to the `NSLayoutGuide`
+             located in the left hand side of it
+             - parameter lhs: `NSLayoutGuide` the attributes will apply to
+             - parameter rhs: Attribute applied to the `NSLayoutGuide`
+             - returns: The array of `NSLayoutConstraints` applied
+         */
+        @discardableResult static func <- (lhs: NSLayoutGuide, rhs: Attribute) -> [NSLayoutConstraint] {
+            return lhs <- [rhs]
+        }
+
+        /**
+             Opeator which applies the attributes given to the `NSLayoutGuide`
+             located in the left hand side of it
+             - parameter lhs: `NSLayoutGuide` the attributes will apply to
+             - parameter rhs: Attributes applied to the `NSLayoutGuide`
+             - returns: The array of `NSLayoutConstraints` applied
+         */
+        @discardableResult static func <- (lhs: NSLayoutGuide, rhs: [Attribute]) -> [NSLayoutConstraint] {
+            // Apply attributes and return the installed `NSLayoutConstraints`
+            return lhs.apply(attributes: rhs)
+        }
     }
 
-    /**
-         Opeator which applies the attributes given to the `NSLayoutGuide`
-         located in the left hand side of it
-         - parameter lhs: `NSLayoutGuide` the attributes will apply to
-         - parameter rhs: Attributes applied to the `NSLayoutGuide`
-         - returns: The array of `NSLayoutConstraints` applied
-     */
-    @discardableResult public static func <- (lhs: NSLayoutGuide, rhs: [Attribute]) -> [NSLayoutConstraint] {
-        // Apply attributes and return the installed `NSLayoutConstraints`
-        return lhs.apply(attributes: rhs)
-    }
-
-}
-    
 #endif

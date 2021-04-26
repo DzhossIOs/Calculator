@@ -9,9 +9,9 @@
 // SOFTWARE.
 
 #if os(iOS) || os(tvOS)
-import UIKit
+    import UIKit
 #else
-import AppKit
+    import AppKit
 #endif
 
 /**
@@ -26,20 +26,19 @@ import AppKit
 #endif
 
 /**
-    Struct that aggregates `NSLayoutRelation`, constant and multiplier of a 
+    Struct that aggregates `NSLayoutRelation`, constant and multiplier of a
     layout constraint eventually created
  */
 public struct Constant {
-    
     /// Value of the constant
     public let value: CGFloat
-    
+
     /// Relation that applies to the `value` of the `Constant`
     public let relation: Relation
-    
+
     /// Multiplier of the `Constant`
     public let multiplier: CGFloat
-    
+
     /**
         This initializer creates a `Constant` with the `value`, `relations`
         and `multiplier` supplied.
@@ -53,21 +52,20 @@ public struct Constant {
         self.relation = relation
         self.multiplier = multiplier
     }
-    
 }
 
 /// Operator that eases the creation of a `Constant` with a `.Equal` relation
 prefix operator ==
 
-/// Operator that eases the creation of a `Constant` with a 
+/// Operator that eases the creation of a `Constant` with a
 /// `.GreaterThanOrEqual` relation
 prefix operator >=
 
-/// Operator that eases the creation of a `Constant` with a `.LessThanOrEqual` 
+/// Operator that eases the creation of a `Constant` with a `.LessThanOrEqual`
 /// relation
 prefix operator <=
 
-/// Operator that eases the creation of a `Constant` with `value = 0.0` and 
+/// Operator that eases the creation of a `Constant` with `value = 0.0` and
 /// `multiplier` the value specifier at the right hand side of the operator
 prefix operator *
 
@@ -76,7 +74,6 @@ prefix operator *
     structs
  */
 public extension CGFloat {
-
     /**
         Prefix operator that eases the creation of a `Constant` with a
         `.Equal` relation
@@ -119,10 +116,10 @@ public extension CGFloat {
 
     /**
         Infix operator that applies the `multiplier` at the right hand side to the
-        `Constant` at the left hand side. 
+        `Constant` at the left hand side.
         i.e. `Width((>=200.0)*0.5)` creates a `Constant` with `multiplier = 0.5`,
         `relation = .GreaterThanOrEqual` and `value = 200.0`.
-        If the left hand side `Constant` already has a `multiplier` defined the 
+        If the left hand side `Constant` already has a `multiplier` defined the
         resulting `multiplier` will be the multiplication of both, previous and new
         `multipliers`.
         - parameter lhs: a `Constant`
@@ -132,5 +129,4 @@ public extension CGFloat {
     static func * (lhs: Constant, rhs: CGFloat) -> Constant {
         return Constant(value: lhs.value, relation: lhs.relation, multiplier: lhs.multiplier * rhs)
     }
-
 }
