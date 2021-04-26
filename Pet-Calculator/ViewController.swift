@@ -355,7 +355,7 @@ class ViewController: UIViewController {
                 checkStringLength(value: "0.")
                 dotCounter = true
             } else {
-                checkStringLength(value: "0.")
+                checkStringLength(value: ".")
                 dotCounter = true
             }
         } else {
